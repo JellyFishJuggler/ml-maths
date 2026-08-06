@@ -112,12 +112,25 @@ def _fnIntercept(input,target):
 
     return op - (m * ip)
 
-def LinearEquation(input,target):
+
+# fit function (we already implementated it but giving the right convention)
+def _fit(input,target):
 
     slope = _fnSlope(input,target)
     intercept = _fnIntercept(input,target)
 
-    return f'Line of Equation based on provided dataset is y = {slope} * x + {intercept}'
+    # return f'Line of Equation based on provided dataset is y = {slope} * x + {intercept}'
+    return slope, intercept
+
+def _predict(new_x,input,target):
+
+    x = new_x
+    # m,c = _fit(input,target)
+    m = _fnSlope(input,target)
+    c = _fnIntercept(input,target)
+
+    predicted_value = m*x + c
+    return predicted_value
 
 df = py.DataFrame({
     "Marks" : [20,40,60,70,90],
@@ -134,7 +147,9 @@ y = df['Marks']
 # print(_calculateProductMeanofVariables(X,y))
 # print( _fnSlope(X,y))
 # print(_fnIntercept(X,y))
-print(LinearEquation(X,y))
+print(_fit(X,y))
+x = 10
+print(_predict(x,X,y))
 # print(type(X.values()))
 
 # for i in X:
