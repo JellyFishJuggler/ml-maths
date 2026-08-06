@@ -132,13 +132,13 @@ def _predict(new_x,input,target):
     predicted_value = m*x + c
     return predicted_value
 
-df = py.DataFrame({
-    "Marks" : [20,40,60,70,90],
-    "Hours" : [2,4,6,8,9]
-})
+# df = py.DataFrame({
+#     "Marks" : [20,40,60,70,90],
+#     "Hours" : [2,4,6,8,9]
+# })
 
-X = df[['Hours']]
-y = df['Marks']
+# X = df[['Hours']]
+# y = df['Marks']
 
 # print(X)
 # print(y)
@@ -147,11 +147,38 @@ y = df['Marks']
 # print(_calculateProductMeanofVariables(X,y))
 # print( _fnSlope(X,y))
 # print(_fnIntercept(X,y))
-print(_fit(X,y))
-x = 10
-print(_predict(x,X,y))
+# print(_fit(X,y))
+# x = 10
+# print(_predict(x,X,y))
 # print(type(X.values()))
 
 # for i in X:
 #     print(i)
 #     print(type(i))
+
+n = int(input('Number of columns: '))
+
+dc = dict()
+
+for _ in range(n):
+    key = input('Enter column name: ')
+    value = input(f'Enter values for {key} (comma separated): ')
+    dc[key] = [float(i.strip()) for i in value.split(",")]
+
+df = py.DataFrame(dc)
+
+print("Provided Dataset")
+print(df)
+print(df.columns)
+
+input_column = input('Which column is independent variable: ')
+target_coumn = input('Which column is dependent variable: ')
+
+
+X = df[input_column]
+y = df[target_coumn]
+
+
+x_test = int(input('Enter the value on which you want to predict: '))
+
+print(f'Predicted value at {x_test} Hours is {_predict(x_test,X,y)}')
