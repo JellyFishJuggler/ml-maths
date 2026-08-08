@@ -1,3 +1,5 @@
+#SIMPLE LINEAR REGRESSION
+
 # tsk is to make a function and do prediction over a dataset using simple linear regression model
 # basic funda is we need 2 variables - y and x, and a few functions for calculating intercept and slope of the curve.
 # m = summition of (x-x_mean).(y-y_mean) / summition of (x-x_mean)^2
@@ -34,7 +36,7 @@ def _calculateMeanDifference(input):
     element_mean = _calculateMean(input)
     _differ = 0
     # x_difference_x_mean_summition = 0
-    print(element_mean)
+    # print(element_mean)
 
     _diff_List = []
 
@@ -59,7 +61,7 @@ def _calculateMeanDifferenceSquare(input):
 
     x_difference_x_mean_summition = []
 
-    print(element_mean)
+    # print(element_mean)
     # print('=====')
     for i in input.values:
         _differ_sq = (i - element_mean) ** 2
@@ -181,4 +183,4 @@ y = df[target_coumn]
 
 x_test = int(input('Enter the value on which you want to predict: '))
 
-print(f'Predicted value at {x_test} Hours is {_predict(x_test,X,y)}')
+print(f'Predicted marks at {x_test} Hours is {_predict(x_test,X,y)}')
