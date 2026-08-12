@@ -1,7 +1,7 @@
 import pandas as py
 import numpy as np
 
-# goal is to create a logistic function using gradient ascent and newton's method
+# goal is to create a logistic function using gradient ascent and newton's method (later)
 # general idea is that we need a sigmoid function and a function for increasing the likelyhood of feature (theta)
 
 
@@ -22,6 +22,11 @@ class LogisticRegression:
         y_predicted = self._sigmoid(z)
         return y_predicted
 
+    def predict_class(self, input):
+
+        probability = self._predict(input)
+        return (probability >= 0.5).astype(int)
+
     def sum(self, input):
 
         value = 0
@@ -39,18 +44,18 @@ class LogisticRegression:
     def _sigmoid(self, z):
         return 1 / (1 + np.exp(-z))
 
-    #formula : 
-    #   j(theta) = -1/m * summition of (from 1 to m) : y(i)log(predicted_value(i)) + (1-y(i))log(1-predicted_value(i))
-    def _costFunction(self, y, y_predicted):
+    # log-likelihood -- gradient ASCENT means we MAXIMIZE this, not minimize it
+    #   l(theta) = 1/m * summition of (from 1 to m) : y(i)log(predicted_value(i)) + (1-y(i))log(1-predicted_value(i))
+    def _logLikelihood(self, y, y_predicted):
 
         m = len(y)
         term1 = self.multiple(y, np.log(y_predicted))
         term2 = self.multiple((1 - y), np.log(1 - y_predicted))
-        j = (-1 / m) * (term1 + term2)
-        return j
+        likelihood = (1 / m) * (term1 + term2)
+        return likelihood
 
-    # forumula : 
-        # theta := theta + alfa * (y - ypredicted) * x
+    # gradient of the log-likelihood w.r.t theta and intercept
+    #   d/dtheta = 1/m * X.T . (y - y_predicted)
     def _gradientCalculation(self, X, y, y_predicted):
 
         m = len(y)
@@ -59,6 +64,8 @@ class LogisticRegression:
         grad_intercept = (1 / m) * self.sum(error)
         return grad_theta, grad_intercept
 
+    # gradient ASCENT: move theta in the direction that increases likelihood
+    #   theta := theta + alfa * gradient
     def _updateGradient(self, grad_theta, grad_intercept):
 
         self.theta = self.theta + (self.alfa * grad_theta)
@@ -79,21 +86,21 @@ class LogisticRegression:
         self.theta = np.zeros(self.n)
         self.intercept = 0
 
-        previous_cost = float("inf")
+        previous_likelihood = float("-inf")
 
         for i in range(self.iterations):
 
             y_bar = self._predict(X)
-            cost = self._costFunction(y, y_bar)
+            likelihood = self._logLikelihood(y, y_bar)
 
             grad_theta, grad_intercept = self._gradientCalculation(X, y, y_bar)
             self._updateGradient(grad_theta, grad_intercept)
 
-            # Stop when cost is no longer changing significantly
-            if abs(previous_cost - cost) < self.tolerance:
+            # stop once likelihood stops increasing meaningfully
+            if abs(likelihood - previous_likelihood) < self.tolerance:
                 break
 
-            previous_cost = cost
+            previous_likelihood = likelihood
 
         return self
 
@@ -145,10 +152,16 @@ print(X)
 model.fit(X, y)
 print("theta:", model.theta)
 print("intercept:", model.intercept)
-print("predictions:", model._predict(X.reshape(-1, 1)))
+print("predictions (probability):", model._predict(X.reshape(-1, 1)))
+print("predictions (class):", model.predict_class(X.reshape(-1, 1)))
 
 # classify a new, unseen point using the trained model
 new_val = float(input("\nNaya data point classify karne ke liye numeric feature value: "))
-probability = model._predict(np.array([[new_val]]))[0]
-predicted_class = 1 if probability >= 0.5 else 0
+new_point = np.array([[new_val]])
+probability = model._predict(new_point)[0]
+predicted_class = model.predict_class(new_point)[0]
 print(f"probability: {probability:.4f}  ->  predicted class: {predicted_class}")
+
+
+# Relationship/Single are only example labels.
+# You can use any two class labels; the model automatically encodes them into 0 and 1.
