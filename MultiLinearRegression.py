@@ -16,8 +16,8 @@ class MultiLinearRegression:
         ip = np.hstack((theta_zero,ip))
                 
         ip_transpose = ip.T
-        ip_inverse = np.linalg.inv(ip)
-        ip_transpose_inverse = np.linalg.inv(ip_inverse)
+        # ip_inverse = np.linalg.inv(ip)
+        # ip_transpose_inverse = np.linalg.inv(ip_inverse)
         
         X_T_X_inverse = np.linalg.inv(ip_transpose @ ip)
         
