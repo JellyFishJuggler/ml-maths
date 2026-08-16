@@ -18,6 +18,12 @@ class GradientDescent:
         self.iterations = iterations
         self.tolerance = tolerance
 
+        # Filled in by fit() when track_history=True.
+        # Each entry is (m.copy(), c, cost) recorded BEFORE that iteration's update,
+        # so history[0] is the initial state and history[-1] is the last state
+        # evaluated before the loop stopped.
+        self.history = []
+
     def _predict(self, X):
 
         y_predict = self.c + np.dot(X, self.m)
@@ -62,7 +68,7 @@ class GradientDescent:
         self.m = self.m - (self.alfa * slope)
         self.c = self.c - (self.alfa * intercept)
 
-    def fit(self, X, y):
+    def fit(self, X, y, track_history=False):
 
         X = np.asarray(X, dtype=float)
         y = np.asarray(y, dtype=float)
@@ -76,6 +82,8 @@ class GradientDescent:
         # Initial intercept
         self.c = 0
 
+        self.history = []
+
         previous_cost = float("inf")
 
         for i in range(self.iterations):
@@ -83,6 +91,12 @@ class GradientDescent:
             y_bar = self._predict(X)
             error = self._errorCalculation(y, y_bar)
             cost = np.mean(error ** 2)
+
+            if track_history:
+                # .copy() matters here - self.m is mutated in place every
+                # iteration, so without it every entry would end up pointing
+                # at the same (final) array.
+                self.history.append((self.m.copy(), self.c, cost))
 
             slope, intercept = self._gradientDescentCalculation(X, y, y_bar)
             self.updateParameters(slope, intercept)
@@ -102,23 +116,23 @@ class GradientDescent:
         return self._predict(X)
 
 
-df = py.DataFrame({
-    "Hours":       [2, 4, 6, 8, 10, 12],
-    "Attendance":  [60, 65, 70, 80, 85, 90],
-    "Assignments": [50, 55, 65, 75, 80, 95],
-    "Marks":       [35, 45, 55, 68, 78, 90]
-})
+if __name__ == "__main__":
+    # Demo / smoke-test - only runs when this file is executed directly,
+    # not when it's imported elsewhere (e.g. `from GradientDescent import GradientDescent`)
+    df = py.DataFrame({
+        "Hours":       [2, 4, 6, 8, 10, 12],
+        "Attendance":  [60, 65, 70, 80, 85, 90],
+        "Assignments": [50, 55, 65, 75, 80, 95],
+        "Marks":       [35, 45, 55, 68, 78, 90]
+    })
 
+    X = df[["Hours", "Attendance", "Assignments"]]
+    y = df["Marks"]
 
-X = df[["Hours", "Attendance", "Assignments"]]
-y = df["Marks"]
+    model = GradientDescent()
+    model.fit(X, y)
 
-
-model = GradientDescent()
-
-model.fit(X, y)
-
-print(df.head())
-print("Weights:", model.m)
-print("Intercept:", model.c)
-print("Prediction:", model.predict(X))
+    print(df.head())
+    print("Weights:", model.m)
+    print("Intercept:", model.c)
+    print("Prediction:", model.predict(X))
