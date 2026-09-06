@@ -34,25 +34,27 @@ class MultiLinearRegression:
         return ip @ theta
     
 
-df = py.DataFrame({
-    "Size(x1)"      :   [4,6,8],
-    "Bedroom(x2)"   :   [2,3,1],
-    "Price(y)"      :   [19,26,24]
-})
+if __name__ == "__main__":
+
+    df = py.DataFrame({
+        "Size(x1)"      :   [4,6,8],
+        "Bedroom(x2)"   :   [2,3,1],
+        "Price(y)"      :   [19,26,24]
+    })
 
 
-model = MultiLinearRegression()
+    model = MultiLinearRegression()
 
-X = df.drop(columns=["Price(y)"])
-y = df["Price(y)"]
+    X = df.drop(columns=["Price(y)"])
+    y = df["Price(y)"]
 
-print(X)
-print(y)
+    print(X)
+    print(y)
 
-X_test = py.DataFrame({
-    "Size(x1)": [1600, 2300, 3000],
-    "Bedrooms(x2)": [3, 4, 5]
-})
+    X_test = py.DataFrame({
+        "Size(x1)": [1600, 2300, 3000],
+        "Bedrooms(x2)": [3, 4, 5]
+    })
 
-model.fit(X,y)
-print(model.predict(X_test))        
+    model.fit(X,y)
+    print(model.predict(X_test))

@@ -136,32 +136,33 @@ def collect_training_data():
     return df
 
 
-df = collect_training_data()
-print(df)
+if __name__ == "__main__":
+    df = collect_training_data()
+    print(df)
 
-X = df['Feature']
-y = df['Status']
+    X = df['Feature']
+    y = df['Status']
 
-model = LogisticRegression()
-y = model._fitTransform(y)          # Status is categorical -> encode to 0/1
-X = np.asarray(X, dtype=float)       # Feature is already numeric -> no encoding needed
+    model = LogisticRegression()
+    y = model._fitTransform(y)          # Status is categorical -> encode to 0/1
+    X = np.asarray(X, dtype=float)       # Feature is already numeric -> no encoding needed
 
-print(y)
-print(X)
+    print(y)
+    print(X)
 
-model.fit(X, y)
-print("theta:", model.theta)
-print("intercept:", model.intercept)
-print("predictions (probability):", model._predict(X.reshape(-1, 1)))
-print("predictions (class):", model.predict_class(X.reshape(-1, 1)))
+    model.fit(X, y)
+    print("theta:", model.theta)
+    print("intercept:", model.intercept)
+    print("predictions (probability):", model._predict(X.reshape(-1, 1)))
+    print("predictions (class):", model.predict_class(X.reshape(-1, 1)))
 
-# classify a new, unseen point using the trained model
-new_val = float(input("\nNaya data point classify karne ke liye numeric feature value: "))
-new_point = np.array([[new_val]])
-probability = model._predict(new_point)[0]
-predicted_class = model.predict_class(new_point)[0]
-print(f"probability: {probability:.4f}  ->  predicted class: {predicted_class}")
+    # classify a new, unseen point using the trained model
+    new_val = float(input("\nNaya data point classify karne ke liye numeric feature value: "))
+    new_point = np.array([[new_val]])
+    probability = model._predict(new_point)[0]
+    predicted_class = model.predict_class(new_point)[0]
+    print(f"probability: {probability:.4f}  ->  predicted class: {predicted_class}")
 
 
-# Relationship/Single are only example labels.
-# You can use any two class labels; the model automatically encodes them into 0 and 1.
+    # Relationship/Single are only example labels.
+    # You can use any two class labels, the model automatically encodes them into 0 and 1.

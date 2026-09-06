@@ -158,29 +158,31 @@ def _predict(new_x,input,target):
 #     print(i)
 #     print(type(i))
 
-n = int(input('Number of columns: '))
+if __name__ == "__main__":
 
-dc = dict()
+    n = int(input('Number of columns: '))
 
-for _ in range(n):
-    key = input('Enter column name: ')
-    value = input(f'Enter values for {key} (comma separated): ')
-    dc[key] = [float(i.strip()) for i in value.split(",")]
+    dc = dict()
 
-df = py.DataFrame(dc)
+    for _ in range(n):
+        key = input('Enter column name: ')
+        value = input(f'Enter values for {key} (comma separated): ')
+        dc[key] = [float(i.strip()) for i in value.split(",")]
 
-print("Provided Dataset")
-print(df)
-print(df.columns)
+    df = py.DataFrame(dc)
 
-input_column = input('Which column is independent variable: ')
-target_coumn = input('Which column is dependent variable: ')
+    print("Provided Dataset")
+    print(df)
+    print(df.columns)
 
-
-X = df[input_column]
-y = df[target_coumn]
+    input_column = input('Which column is independent variable: ')
+    target_coumn = input('Which column is dependent variable: ')
 
 
-x_test = int(input('Enter the value on which you want to predict: '))
+    X = df[input_column]
+    y = df[target_coumn]
 
-print(f'Predicted marks at {x_test} Hours is {_predict(x_test,X,y)}')
+
+    x_test = int(input('Enter the value on which you want to predict: '))
+
+    print(f'Predicted marks at {x_test} Hours is {_predict(x_test,X,y)}')
