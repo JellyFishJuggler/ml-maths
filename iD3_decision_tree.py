@@ -160,64 +160,65 @@ class ID3:
         mp.show()
             
 
-# data = {
-#     "Outlook" : ["Sunny", "Sunny", "Overcast", "Rain", "Rain", "Rain", "Overcast", "Sunny", "Sunny"],
-#     "Temp" : ["Hot","Hot","Hot","Mild","Cool","Cool","Cool","Mild","Cool"],
-#     "Humidity" : ["High","High","High","High","Normal","Normal","Normal","Normal","High"],
-#     "Wind" : ["Weak","Strong","Weak","Weak","Weak","Strong","Strong","Weak","Weak"],
-#     "Play" : ["N","N","Y","Y","Y","N","Y","N","Y"]
-# }
+if __name__ == "__main__":
 
-data = {
-    "Age": [
-        "Young", "Young", "Middle", "Middle", "Senior",
-        "Senior", "Middle", "Young", "Senior", "Middle"
-    ],
-    "Income": [
-        "Low", "High", "High", "Low", "High",
-        "Low", "High", "Low", "High", "High"
-    ],
-    "CreditScore": [
-        "Bad", "Good", "Good", "Bad", "Good",
-        "Bad", "Good", "Bad", "Good", "Bad"
-    ],
-    "Employment": [
-        "No", "Yes", "Yes", "No", "Yes",
-        "No", "Yes", "No", "Yes", "Yes"
-    ],
-    "LoanApproved": [
-        "No", "Yes", "Yes", "No", "Yes",
-        "No", "Yes", "No", "Yes", "No"
-    ]
-}
+    # data = {
+    #     "Outlook" : ["Sunny", "Sunny", "Overcast", "Rain", "Rain", "Rain", "Overcast", "Sunny", "Sunny"],
+    #     "Temp" : ["Hot","Hot","Hot","Mild","Cool","Cool","Cool","Mild","Cool"],
+    #     "Humidity" : ["High","High","High","High","Normal","Normal","Normal","Normal","High"],
+    #     "Wind" : ["Weak","Strong","Weak","Weak","Weak","Strong","Strong","Weak","Weak"],
+    #     "Play" : ["N","N","Y","Y","Y","N","Y","N","Y"]
+    # }
 
-df = py.DataFrame(data)
-# print(df)
+    data = {
+        "Age": [
+            "Young", "Young", "Middle", "Middle", "Senior",
+            "Senior", "Middle", "Young", "Senior", "Middle"
+        ],
+        "Income": [
+            "Low", "High", "High", "Low", "High",
+            "Low", "High", "Low", "High", "High"
+        ],
+        "CreditScore": [
+            "Bad", "Good", "Good", "Bad", "Good",
+            "Bad", "Good", "Bad", "Good", "Bad"
+        ],
+        "Employment": [
+            "No", "Yes", "Yes", "No", "Yes",
+            "No", "Yes", "No", "Yes", "Yes"
+        ],
+        "LoanApproved": [
+            "No", "Yes", "Yes", "No", "Yes",
+            "No", "Yes", "No", "Yes", "No"
+        ]
+    }
 
-# X = df.drop(columns=["Play"])
-# y = df["Play"]
+    df = py.DataFrame(data)
+    # print(df)
 
-X = df.drop(columns=["LoanApproved"])
-y = df["LoanApproved"]
+    # X = df.drop(columns=["Play"])
+    # y = df["Play"]
 
+    X = df.drop(columns=["LoanApproved"])
+    y = df["LoanApproved"]
 
-model = ID3(X,y)
-print(f'Entropy: {model.entropy(y)}')
-# print(f'Information Gain of wind: {model.informationGain(X["Wind"])}')
-print(model.fit())
-# row = model.X.iloc[0]
-row = py.Series({
-    "Age": "Young",
-    "Income": "High",
-    "CreditScore": "Good",
-    "Employment": "Yes"
-})
+    model = ID3(X, y)
+    print(f'Entropy: {model.entropy(y)}')
+    # print(f'Information Gain of wind: {model.informationGain(X["Wind"])}')
+    print(model.fit())
+    # row = model.X.iloc[0]
+    row = py.Series({
+        "Age": "Young",
+        "Income": "High",
+        "CreditScore": "Good",
+        "Employment": "Yes"
+    })
 
-print(model.predict(model.fit(), row))
-print(model.predict(model.fit(), row))
-model.plotTree()
-# print(y)
-# print(y.value_counts())
-# print(y[y == 'Y'].value_counts())
-# print(y[y == 'N'].value_counts())
-# print(y.loc[0])
+    print(model.predict(model.fit(), row))
+    print(model.predict(model.fit(), row))
+    model.plotTree()
+    # print(y)
+    # print(y.value_counts())
+    # print(y[y == 'Y'].value_counts())
+    # print(y[y == 'N'].value_counts())
+    # print(y.loc[0])
